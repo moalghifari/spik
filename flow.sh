@@ -7,7 +7,9 @@ HLEd -l '*' -d dict -i phones0.mlf mkphones0.led words.mlf
 HLEd -l '*' -d dict -i phones1.mlf mkphones1.led words.mlf
 python3 code/gen_scp.py > codetr.scp
 HCopy -T 1 -C config -S codetr.scp
-python3 code/gen_scp.py > train.scp
+
+; change train.scp here~
+python3 code/gen_train_scp.py > train.scp
 ; create proto file
 mkdir hmm0
 HCompV -A -D -T 1 -C config -f 0.01 -m -S train.scp -M hmm0 proto
@@ -45,3 +47,20 @@ julia code/mkclscript.jl monophones0 tree.hed
 HHEd -A -D -T 1 -H hmm12/macros -H hmm12/hmmdefs -M hmm13 tree.hed triphones1
 HERest -A -D -T 1 -T 1 -C config -I wintri.mlf  -t 250.0 150.0 3000.0 -S train-triphone.scp -H hmm13/macros -H hmm13/hmmdefs -M hmm14 tiedlist
 HERest -A -D -T 1 -T 1 -C config -I wintri.mlf  -t 250.0 150.0 3000.0 -S train-triphone.scp -H hmm14/macros -H hmm14/hmmdefs -M hmm15 tiedlist
+
+; create n-gram
+; cat source/low.lab | cut -d' ' -f2- > source/clean.lab
+; remove <> from clean.lab
+; mkdir ngram.0
+; LNewMap -f WFC ngram empty.wmap 
+; LGPrep -T 1 -a 100000 -b 200000 -d ngram.0 -n 4 -s "ngram" empty.wmap source/clean.lab
+; LGCopy -T 1 -b 200000 -d ngram.1 ngram.0/wmap ngram.0/gram.*
+
+; change test.scp / train.scp here
+; for closed and open
+HLStats -b bigfn -o wlist words.mlf
+; create wlistfn from wlist and add !ENTER !EXIT
+HBuild -n bigfn wlistfn wdnet
+; add !ENTER and !EXIT to dict
+HVite -C config -H hmm15/macros -H hmm15/hmmdefs -S test.scp -l '*' -i recout.mlf -w wdnet -p 0.0 -s 5.0 dict_ngram tiedlist
+HResults -I words.mlf tiedlist recout.mlf
