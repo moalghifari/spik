@@ -2,4 +2,4 @@
 
 Thanks from Ridho who guides and carries team~
 
-[RIDHO]: (https://github.com/ridho9/htk)
+[RIDHO](https://github.com/ridho9/htk)
