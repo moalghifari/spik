@@ -8,10 +8,11 @@ HLEd -l '*' -d dict -i phones1.mlf mkphones1.led words.mlf
 python3 code/gen_scp.py > codetr.scp
 HCopy -T 1 -C config -S codetr.scp
 
-; change train.scp here~
+; INFO: remove SOURCEFORMAT = WAV for .mfc file
+; for closed
+; for open please use python3 code/gen_train_test_scp.py
 python3 code/gen_train_scp.py > train.scp
 ; create proto file
-mkdir hmm0
 HCompV -A -D -T 1 -C config -f 0.01 -m -S train.scp -M hmm0 proto
 ; create `monophones0` from `monophones1` + sil
 ; create hmmdefs
@@ -65,5 +66,6 @@ HBuild -n bigfn wlistfn wdnet
 ; !ENTER [] sil and !EXIT [] sil
 
 ; for closed experiment
+; for open please use test.scp
 HVite -C config -H hmm15/macros -H hmm15/hmmdefs -S train.scp -l '*' -i recout.mlf -w wdnet -p 0.0 -s 5.0 dict-ngram tiedlist
 HResults -I words.mlf tiedlist recout.mlf

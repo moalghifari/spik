@@ -7,4 +7,4 @@ with open("filelist", "r") as f:
         filelist.append(line.strip())
 
 for f in filelist:
-    print(f"{pwd}/{f}.wav")
+    print(f"{pwd}/{f}.mfc")
