@@ -57,10 +57,13 @@ HERest -A -D -T 1 -T 1 -C config -I wintri.mlf  -t 250.0 150.0 3000.0 -S train-t
 ; LGCopy -T 1 -b 200000 -d ngram.1 ngram.0/wmap ngram.0/gram.*
 
 ; change test.scp / train.scp here
-; for closed and open
+; experiment
 HLStats -b bigfn -o wlist words.mlf
 ; create wlistfn from wlist and add !ENTER !EXIT
 HBuild -n bigfn wlistfn wdnet
 ; add !ENTER and !EXIT to dict
-HVite -C config -H hmm15/macros -H hmm15/hmmdefs -S test.scp -l '*' -i recout.mlf -w wdnet -p 0.0 -s 5.0 dict_ngram tiedlist
+; !ENTER [] sil and !EXIT [] sil
+
+; for closed experiment
+HVite -C config -H hmm15/macros -H hmm15/hmmdefs -S train.scp -l '*' -i recout.mlf -w wdnet -p 0.0 -s 5.0 dict-ngram tiedlist
 HResults -I words.mlf tiedlist recout.mlf
