@@ -48,6 +48,9 @@ julia code/mkclscript.jl monophones0 tree.hed
 HHEd -A -D -T 1 -H hmm12/macros -H hmm12/hmmdefs -M hmm13 tree.hed triphones1
 HERest -A -D -T 1 -T 1 -C config -I wintri.mlf  -t 250.0 150.0 3000.0 -S train-triphone.scp -H hmm13/macros -H hmm13/hmmdefs -M hmm14 tiedlist
 HERest -A -D -T 1 -T 1 -C config -I wintri.mlf  -t 250.0 150.0 3000.0 -S train-triphone.scp -H hmm14/macros -H hmm14/hmmdefs -M hmm15 tiedlist
+HERest -A -D -T 1 -T 1 -C config -I wintri.mlf  -t 250.0 150.0 3000.0 -S train-triphone.scp -H hmm15/macros -H hmm15/hmmdefs -M hmm16 tiedlist
+HERest -A -D -T 1 -T 1 -C config -I wintri.mlf  -t 250.0 150.0 3000.0 -S train-triphone.scp -H hmm16/macros -H hmm16/hmmdefs -M hmm17 tiedlist
+HERest -A -D -T 1 -T 1 -C config -I wintri.mlf  -t 250.0 150.0 3000.0 -S train-triphone.scp -H hmm17/macros -H hmm17/hmmdefs -M hmm18 tiedlist
 
 ; create n-gram
 ; cat source/low.lab | cut -d' ' -f2- > source/clean.lab
@@ -67,5 +70,5 @@ HBuild -n bigfn wlistfn wdnet
 
 ; for closed experiment
 ; for open please use test.scp
-HVite -C config -H hmm15/macros -H hmm15/hmmdefs -S train.scp -l '*' -i recout.mlf -w wdnet -p 0.0 -s 5.0 dict-ngram tiedlist
+HVite -C config -H hmm18/macros -H hmm18/hmmdefs -S train.scp -l '*' -i recout.mlf -w wdnet -p 0.0 -s 5.0 dict-ngram tiedlist
 HResults -I words.mlf tiedlist recout.mlf
